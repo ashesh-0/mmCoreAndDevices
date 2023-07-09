@@ -6760,6 +6760,8 @@ void CMMCore::loadSystemConfigurationImpl(const char* fileName) throw (CMMError)
 {
    if (!fileName)
       throw CMMError("Null filename");
+   
+   cout << "loading configuration, ashesh !!!!\n";
 
    ifstream is;
    is.open(fileName, ios_base::in);
