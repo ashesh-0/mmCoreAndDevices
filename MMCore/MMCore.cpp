@@ -64,6 +64,7 @@
 #include <set>
 #include <sstream>
 #include <vector>
+#include <iostream>
 
 
 #ifndef _WINDOWS
@@ -161,6 +162,12 @@ CMMCore::CMMCore() :
    }
 
    CreateCoreProperties();
+   std::ofstream outfile ("/home/ubuntu/ashesh/code/microscopy_software/test.txt");
+
+   outfile << "ashesh is here!" << std::endl;
+
+   outfile.close();
+
    LOG_INFO(coreLogger_) << "Check. ashesh !!";
 }
 
