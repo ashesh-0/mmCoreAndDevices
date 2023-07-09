@@ -143,6 +143,7 @@ CMMCore::CMMCore() :
    deviceManager_(new mm::DeviceManager()),
    pPostedErrorsLock_(NULL)
 {
+
    configGroups_ = new ConfigGroupCollection();
    pixelSizeGroup_ = new PixelSizeConfigGroup();
    pPostedErrorsLock_ = new MMThreadLock();
@@ -160,6 +161,7 @@ CMMCore::CMMCore() :
    }
 
    CreateCoreProperties();
+   LOG_INFO(coreLogger_) << "Check. ashesh !!";
 }
 
 /**
@@ -6761,7 +6763,6 @@ void CMMCore::loadSystemConfigurationImpl(const char* fileName) throw (CMMError)
    if (!fileName)
       throw CMMError("Null filename");
    
-   cout << "loading configuration, ashesh !!!!\n";
 
    ifstream is;
    is.open(fileName, ios_base::in);
