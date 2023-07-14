@@ -8,7 +8,9 @@ tags
 *.stamp
 *.dirstamp
 *.bak
-
+# C++ based
+*.gch
+*.out
 /SecretDeviceAdapters/
 
 # Visual Studio
