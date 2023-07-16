@@ -1,5 +1,5 @@
-#ifndef _MMCORE_H_
-#define _MMCORE_H_
+#ifndef _MDASequence_H_
+#define _MDASequence_H_
 
 #ifdef _MSC_VER
 // We use exception specifications to instruct SWIG to generate the correct
@@ -8,9 +8,6 @@
 #pragma warning(disable : 4290)
 #endif
 
-#include <map>
-#include <vector>
-#include <string>
 
 class MDASequence;
 
@@ -23,4 +20,4 @@ private:
     int uid_;
 };
 
-#endif //_MMCORE_H_
+#endif //_MDASequence_H_

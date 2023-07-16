@@ -26,67 +26,6 @@
 
 using namespace std;
 
-enum Indices {TIME, POSITION, GRID, CHANNEL, Z};
-enum GridPlans {GridFromEdges, GridRelative, NoGrid};
-
-int MaxNameLength = 256;
-int MaxConfigLength = 2560;
-
-class Position {
-public:
-    int x;
-    int y;
-    int z;
-    char[MaxNameLength] name;
-    // TODO: sequence?
-    void setPosition(int x, int y, int z) {
-        this->x = x;
-        this->y = y;
-        this->z = z;
-    }
-    void setName(char[MaxNameLength] name) {
-        // TODO: check pointer issue. if I change the argument, does the class name change? 
-        strcpy(this->name, name);
-
-    }
-
-};
-
-class Channel
-{
-public:
-    char[MaxConfigLength] name;
-    char[MaxNameLength] group;
-    float exposure;
-    bool doStack;
-    float zOffset;
-    uint acquireEvery;
-    char[MaxNameLength] Camera;
-
-    void setName(char[MaxConfigLength] name) {
-        strcpy(this->name, name);
-    }
-    void setGroup(char[MaxNameLength] group) {
-        strcpy(this->group, group);
-    }
-    void setExposure(float exposure) {
-        this->exposure = exposure;
-    }
-    void setDoStack(bool doStack) {
-        this->doStack = doStack;
-    }
-    void setZOffset(float zOffset) {
-        this->zOffset = zOffset;
-    }
-    void setAcquireEvery(uint acquireEvery) {
-        this->acquireEvery = acquireEvery;
-    }
-    void setCamera(char[MaxNameLength] Camera) {
-        strcpy(this->Camera, Camera);
-    }
-};
-
-vector<Indices> DefaultAxisOrder = {TIME, POSITION, GRID, CHANNEL, Z};
 
 
 MDASequence::MDASequence(std::map<std::string, float> timePlan, std::vector<Position> stagePositions, std::map<std::string,int> gridPlan, 
