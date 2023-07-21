@@ -21,11 +21,11 @@ MDAIndexGenerator::MDAIndexGenerator(int rows, int cols, bool snake, bool row_wi
     cols_(cols),
     snake_(snake),
     row_wise_(row_wise),
-    current_row_(-1),
-    current_col_(-1)
+    total_positions_(-1)
 {
-    // empty constructor
+    reset();
 }
+
 tuple<int,int> MDAIndexGenerator::next()
 {
     if (current_row_ == -1 || current_col_ == -1){
@@ -91,15 +91,44 @@ tuple<int,int> MDAIndexGenerator::next()
     return make_tuple(current_row_, current_col_);
 }
 
-int main()
+void MDAIndexGenerator::reset()
 {
-// initialize the position class with a dummy example
-    int rows = 4;
-    int cols= 5;
-    auto gen = MDAIndexGenerator(rows,cols,true,false);
-    for (auto i = 0; i <rows*cols; i++){
-        auto loc = gen.next();
-        cout << std::get<0>(loc) << std::get<1>(loc) << endl;
-    }
-    return 0;
+    current_row_ = -1;
+    current_col_ = -1;
 }
+
+unsigned int MDAIndexGenerator::totalPositions()
+{
+    if (total_positions_ != -1)
+        return total_positions_;
+
+    // For spiral index generator, this logic is necesasary. Otherwise, we could simply return rows_*cols_.
+    auto old_row = current_row_;
+    auto old_col = current_col_;
+    reset();
+    auto total_positions_ = 0;
+    
+    while (true){
+        auto loc = next();
+        if (std::get<0>(loc) == INT_MIN && std::get<1>(loc) == INT_MIN)
+            break;
+        total_positions_++;
+    }
+
+    current_row_ = old_row;
+    current_col_ = old_col;
+    return total_positions_;
+}
+
+// int main()
+// {
+// // initialize the position class with a dummy example
+//     int rows = 4;
+//     int cols= 5;
+//     auto gen = MDAIndexGenerator(rows,cols,true,false);
+//     for (auto i = 0; i <rows*cols; i++){
+//         auto loc = gen.next();
+//         cout << std::get<0>(loc) << std::get<1>(loc) << endl;
+//     }
+//     return 0;
+// }
