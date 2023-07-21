@@ -1,4 +1,9 @@
 #include "MDAIndexGenerator.h"
+#include "limits.h"
+#include <iostream>
+#include <tuple>
+
+
 #ifndef _WINDOWS
 // Needed on Unix for getcwd() and gethostname()
 #include <pwd.h>
@@ -7,9 +12,7 @@
 #else
 // for _getcwd
 #include <direct.h>
-#include <vector>
 #endif
-#include <tuple>
 
 using namespace std;
 
@@ -18,16 +21,21 @@ MDAIndexGenerator::MDAIndexGenerator(int rows, int cols, bool snake, bool row_wi
     cols_(cols),
     snake_(snake),
     row_wise_(row_wise),
-    current_row_(0),
-    current_col_(0)
+    current_row_(-1),
+    current_col_(-1)
 {
     // empty constructor
 }
-tuple<int,int> next():
+tuple<int,int> MDAIndexGenerator::next()
 {
-    if (snake_ == false){
+    if (current_row_ == -1 || current_col_ == -1){
+        assert(current_col_ ==-1 && current_row_ == -1);
+        current_row_ = 0;
+        current_col_ = 0;
+    }
+    else if (snake_ == false){
         if (row_wise_ == true){
-            if (current_col_ == cols_){
+            if (current_col_ == cols_-1){
                 current_col_ = 0;
                 current_row_++;
             }
@@ -36,7 +44,7 @@ tuple<int,int> next():
             }
         }
         else{
-            if (current_row_ == rows_){
+            if (current_row_ == rows_-1){
                 current_row_ = 0;
                 current_col_++;
             }
@@ -47,12 +55,10 @@ tuple<int,int> next():
     }
     else{
         if (row_wise_ == true){
-            if (current_col_ == cols_ && current_row_ % 2 == 0){
-                current_col_ = cols_ - 1;
+            if (current_col_ == cols_-1 && current_row_ % 2 == 0){
                 current_row_++;
             }
             else if (current_col_ == 0 && current_row_ % 2 == 1){
-                current_col_ = 0;
                 current_row_++;
             }
             else{
@@ -63,12 +69,10 @@ tuple<int,int> next():
             }
         }
         else{
-            if (current_row_ == rows_ && current_col_ % 2 == 0){
-                current_row_ = rows_ - 1;
+            if (current_row_ == rows_-1 && current_col_ % 2 == 0){
                 current_col_++;
             }
             else if (current_row_ == 0 && current_col_ % 2 == 1){
-                current_row_ = 0;
                 current_col_++;
             }
             else{
@@ -79,7 +83,8 @@ tuple<int,int> next():
             }
         }
     }
-    if current_row_ >= rows_ || current_col_ >= cols_{
+    if (current_row_ >= rows_ || current_col_ >= cols_)
+    {
         return make_tuple(INT_MIN, INT_MIN );
     }
 
@@ -89,8 +94,12 @@ tuple<int,int> next():
 int main()
 {
 // initialize the position class with a dummy example
-    auto gen = MDAIndexGenerator pos(1,2,true,true);
-    cout << gen.next() << endl;
-    cout << gen.next() << endl;
+    int rows = 4;
+    int cols= 5;
+    auto gen = MDAIndexGenerator(rows,cols,true,false);
+    for (auto i = 0; i <rows*cols; i++){
+        auto loc = gen.next();
+        cout << std::get<0>(loc) << std::get<1>(loc) << endl;
+    }
     return 0;
 }

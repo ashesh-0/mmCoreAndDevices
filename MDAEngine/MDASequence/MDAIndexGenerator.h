@@ -1,5 +1,5 @@
-#ifndef _TIMEPLAN_H_
-#define _TIMEPLAN_H_
+#ifndef _MDAIndexGenerator_H_
+#define _MDAIndexGenerator_H_
 
 #ifdef _MSC_VER
 // We use exception specifications to instruct SWIG to generate the correct
@@ -42,7 +42,7 @@ public:
     float row;
     float col;
     bool is_relative;
-}
+};
 
 enum RelativeTo
 {
@@ -55,10 +55,10 @@ enum OrderMode
 };
 
 // Return the next (row,col) while iterating over a grid in the specified order.
-class IndexGenerator
+class MDAIndexGenerator
 {
 public:
-    IndexGenerator(int rows, int cols, bool snake, bool row_wise);
+    MDAIndexGenerator(int rows, int cols, bool snake, bool row_wise);
     std::tuple<int, int> next();
 private:
     int rows_;
@@ -68,3 +68,5 @@ private:
     int current_row_;
     int current_col_;
 };
+
+#endif // _MDAIndexGenerator_H_
