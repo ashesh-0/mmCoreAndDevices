@@ -1,5 +1,5 @@
-#ifndef _MMCORE_H_
-#define _MMCORE_H_
+#ifndef _TIMEPLAN_H_
+#define _TIMEPLAN_H_
 
 #ifdef _MSC_VER
 // We use exception specifications to instruct SWIG to generate the correct
@@ -58,4 +58,4 @@ private:
     unsigned int timeplan_idx_;
     float cur_timeplan_start_time_;
 };
-#endif //_MMCORE_H_
+#endif //_TIMEPLAN_H_
