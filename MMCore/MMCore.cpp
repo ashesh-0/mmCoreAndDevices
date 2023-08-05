@@ -64,6 +64,7 @@
 #include <set>
 #include <sstream>
 #include <vector>
+#include <iostream>
 
 
 #ifndef _WINDOWS
@@ -143,6 +144,7 @@ CMMCore::CMMCore() :
    deviceManager_(new mm::DeviceManager()),
    pPostedErrorsLock_(NULL)
 {
+
    configGroups_ = new ConfigGroupCollection();
    pixelSizeGroup_ = new PixelSizeConfigGroup();
    pPostedErrorsLock_ = new MMThreadLock();
@@ -160,6 +162,13 @@ CMMCore::CMMCore() :
    }
 
    CreateCoreProperties();
+   std::ofstream outfile ("/home/ubuntu/ashesh/code/microscopy_software/test.txt");
+
+   outfile << "ashesh is here!" << std::endl;
+
+   outfile.close();
+
+   LOG_INFO(coreLogger_) << "Check. ashesh !!";
 }
 
 /**
@@ -6760,6 +6769,7 @@ void CMMCore::loadSystemConfigurationImpl(const char* fileName) throw (CMMError)
 {
    if (!fileName)
       throw CMMError("Null filename");
+   
 
    ifstream is;
    is.open(fileName, ios_base::in);
