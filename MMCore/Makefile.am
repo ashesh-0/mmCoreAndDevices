@@ -101,7 +101,13 @@ libMMCore_la_SOURCES = \
 	TaskSet_CopyMemory.cpp \
 	TaskSet_CopyMemory.h \
 	ThreadPool.cpp \
-	ThreadPool.h
+	ThreadPool.h \
+	../MDAEngine/MMRunner.cpp \
+	../MDAEngine/MMRunner.h \
+	../MDAEngine/MDAEvent.cpp \
+	../MDAEngine/MDAEvent.h \
+	../MDAEngine/MDAPosition.cpp \
+	../MDAEngine/MDAPosition.h 
 
 if BUILD_CPP_TESTS
 UNITTESTS = unittest
