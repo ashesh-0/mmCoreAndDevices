@@ -35,6 +35,19 @@ public:
     MDAEvent(std::map<std::string, int> index, Channel channel_, float exposure,
     float min_start_time, Position position, int global_index);
     float getMinStartTime();
+    float getExposure();
+    float getZ();
+    float getX();
+    float getY();
+    void setZ(float z);
+    void setX(float x);
+    void setY(float y);
+    bool isXSet();
+    bool isYSet();
+    bool isZSet();
+    bool isExposureSet();
+    bool isChannelSet();
+    bool isAutoshutterSet();
 private:
     std::map<std::string, int> index_;
     Channel channel_;
@@ -42,6 +55,9 @@ private:
     float minStartTime_;
     Position position_;
     int globalIndex_;
+    bool xSet_;
+    bool ySet_;
+    bool zSet_;
     std::map<std::string, float> metadata_;
 
 

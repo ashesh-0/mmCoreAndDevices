@@ -28,13 +28,60 @@ MDAEvent::MDAEvent(std::map<std::string, int> index, Channel channel, float expo
     exposure_(exposure),
     minStartTime_(min_start_time),
     position_(position),
-    globalIndex_(global_index)
+    globalIndex_(global_index),
+    xSet_(false),
+    ySet_(false),
+    zSet_(false)
     {
     ;
     }
 float MDAEvent::getMinStartTime(){
     return minStartTime_;
 }
+float MDAEvent::getExposure(){
+    return exposure_;
+}
+float MDAEvent::getZ(){
+    return position_.getZ();
+}
+float MDAEvent::getX(){
+    return position_.getX();
+}
+float MDAEvent::getY(){
+    return position_.getY();
+}
+void MDAEvent::setZ(float z){
+    position_.setZ(z);
+    zSet_ = true;
+}
+void MDAEvent::setX(float x){
+    position_.setX(x);
+    xSet_ = true;
+}
+void MDAEvent::setY(float y){
+    position_.setY(y);
+    ySet_ = true;
+}
+
+bool MDAEvent::isXSet(){
+    return xSet_;
+}
+bool MDAEvent::isYSet(){
+    return ySet_;
+}
+bool MDAEvent::isZSet(){
+    return zSet_;
+}
+bool MDAEvent::isExposureSet(){
+    return exposure_ != 0;
+}
+bool MDAEvent::isChannelSet(){
+    return channel_.config_ != "";
+}
+bool MDAEvent::isAutoshutterSet(){
+    return false;
+}
+
 // int main(){
 // // Here, we instantiate MDAEvent objects and print out their attributes.
 // // We also instantiate Position and Channel objects and print out their attributes.

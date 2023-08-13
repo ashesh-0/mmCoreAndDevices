@@ -31,6 +31,7 @@ pausedTime_(0),
 pausedInterval_(0.1),
 cancelled_(false)
 {
+    core_ = new CMMCore();
     ofstream MyFile("test123.txt");
     MyFile << "Files can be tricky, but it is fun enough!";
     // get current time in seconds
@@ -210,16 +211,83 @@ unsigned char* CMMRunner::execEvent(MDAEvent& event)
 }
 void CMMRunner::setupEvent(MDAEvent& event)
 {
-    ;
-}
+        // if event.keep_shutter_open:
+        //         ...
+    auto x_pos = event.getX();
+    auto y_pos = event.getY();
+    if (event.isXSet() || event.isYSet())
+    {
+        setEventPosition(event);
+    }
+    if (event.isZSet())
+    {
+        setEventZ(event);
+    }
+    if (event.isChannelSet())
+    {
+        setEventChannel(event);
+    }
+    if (event.isExposureSet())
+    {
+        setEventExposure(event);
+    }
+    if (event.isAutoshutterSet())
+    {
+        setEventAutoshutter(event);
+    }
 
+}
 
 void CMMRunner::finishRun()
 {
     running_ = false;
     cancelled_ = false;
 }
-int main(int argc, char **argv)
+
+// engine related
+void CMMRunner::setEventZ(MDAEvent& event)
 {
- auto var = CMMRunner();
+    ;
 }
+void CMMRunner::setEventChannel(MDAEvent& event)
+{
+    ;
+}
+void CMMRunner::setEventExposure(MDAEvent& event)
+{
+    ;
+}
+void CMMRunner::setEventAutoshutter(MDAEvent& event)
+{
+    ;
+}
+void CMMRunner::setEventPosition(MDAEvent& event)
+{
+    float x_pos;
+    float y_pos;
+    if (event.isXSet())
+    {
+        x_pos = event.getX();
+    }
+    else{
+        // TODO: call mmcore to get current position
+        x_pos = 0.0;
+    }
+
+    if (event.isYSet())
+    {
+        y_pos = event.getY();
+    }
+    else{
+        // TODO: call mmcore to get current position
+        y_pos = 0.0;
+    
+    }
+    // TODO: call mmcore to set position
+    // self._mmc.setXYPosition(x_pos, y_pos);
+}
+
+// int main(int argc, char **argv)
+// {
+//  auto var = CMMRunner();
+// }

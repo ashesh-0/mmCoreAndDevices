@@ -8,8 +8,11 @@
 #pragma warning(disable : 4290)
 #endif
 #include "MDAEvent.h"
+#include "../MMCore/MMCore.h"
+
 
 class MDAEvent;
+class CMMCore;
 
 class CMMRunner
 {
@@ -33,7 +36,14 @@ public:
     void finishRun();
     void prepareToRun();
     float getCurrentTime();
+    // engine related
+    void setEventPosition(MDAEvent& event);
+    void setEventZ(MDAEvent& event);
+    void setEventExposure(MDAEvent& event);
+    void setEventChannel(MDAEvent& event);
+    void setEventAutoshutter(MDAEvent& event);
 private:
+    CMMCore* core_;
     bool running_;
     bool paused_; 
     float pausedTime_;
