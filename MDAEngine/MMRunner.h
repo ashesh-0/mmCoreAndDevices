@@ -1,5 +1,5 @@
-#ifndef _MMCORE_H_
-#define _MMCORE_H_
+#ifndef _MMRunner_H_
+#define _MMRunner_H_
 
 #ifdef _MSC_VER
 // We use exception specifications to instruct SWIG to generate the correct
@@ -7,10 +7,9 @@
 // the mere use of exception specifications (which VC++ does not implement).
 #pragma warning(disable : 4290)
 #endif
+#include "MDAEvent.h"
 
-// #include "MMCore.h"
-#include "MDASequence.h"
-class MDASequence;
+class MDAEvent;
 
 class CMMRunner
 {
@@ -19,13 +18,28 @@ public:
     ~CMMRunner();
 
     bool isRunning();
+    bool isPaused();
+    void cancel();
+    void togglePause();
+    void run(std::vector<MDAEvent> &events);
+    bool runEvent(MDAEvent& event);
+    bool waitUntilEvent(MDAEvent& event);
+    void setupEvent(MDAEvent& event);
+    unsigned char* execEvent(MDAEvent& event);
+    void teardownEvent(MDAEvent& event);
+    void resetTimer();
+    float timeElapsed();
+    bool checkCanceled();
+    void finishRun();
+    void prepareToRun();
+    float getCurrentTime();
 private:
     bool running_;
     bool paused_; 
     float pausedTime_;
     float pausedInterval_;
     bool cancelled_; 
-    MDASequence *sequence_ = nullptr;
+    float startTime_;
 };
 
-#endif //_MMCORE_H_
+#endif //_MMRunner_H_
