@@ -8,7 +8,7 @@
 #pragma warning(disable : 4290)
 #endif
 #include "MDAEvent.h"
-#include "../MMCore/MMCore.h"
+#include "../MMCore.h"
 
 
 class MDAEvent;

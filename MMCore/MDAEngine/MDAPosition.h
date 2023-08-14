@@ -1,5 +1,5 @@
-#ifndef _MDAIndices_H_
-#define _MDAIndices_H_
+#ifndef _MDAPosition_H_
+#define _MDAPosition_H_
 
 #ifdef _MSC_VER
 // We use exception specifications to instruct SWIG to generate the correct
@@ -87,4 +87,4 @@ private:
 // vector<Indices> DefaultAxisOrder = {TIME, POSITION, GRID, CHANNEL, Z};
 
 
-#endif //_MDAIndices_H_
+#endif //_MDAPosition_H_
