@@ -9,6 +9,7 @@ tags
 *.dirstamp
 *.bak
 # C++ based
+*.so
 *.gch
 *.out
 /SecretDeviceAdapters/
