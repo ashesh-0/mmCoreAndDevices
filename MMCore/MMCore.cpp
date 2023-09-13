@@ -114,7 +114,7 @@ using namespace std;
  * (Keep the 3 numbers on one line to make it easier to look at diffs when
  * merging/rebasing.)
  */
-const int MMCore_versionMajor = 10, MMCore_versionMinor = 4, MMCore_versionPatch = 0;
+const int MMCore_versionMajor = 10, MMCore_versionMinor = 5, MMCore_versionPatch = 0;
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2749,13 +2749,17 @@ long CMMCore::getImageBufferSize()
 {
    std::shared_ptr<CameraInstance> camera = currentCameraDevice_.lock();
    if (camera) {
-      mm::DeviceModuleLockGuard guard(camera);
-      return camera->GetImageBufferSize();
+      try
+      {
+         mm::DeviceModuleLockGuard guard(camera);
+         return camera->GetImageBufferSize();
+      }
+      catch (const CMMError&) // Possibly uninitialized camera
+      {
+         // Fall through
+      }
    }
-   else
-   {
-      return 0;
-   }
+   return 0;
 }
 
 /**
@@ -2987,13 +2991,17 @@ bool CMMCore::isSequenceRunning() throw ()
    std::shared_ptr<CameraInstance> camera = currentCameraDevice_.lock();
    if (camera)
    {
-      mm::DeviceModuleLockGuard guard(camera);
-	    return camera->IsCapturing();
+      try
+      {
+         mm::DeviceModuleLockGuard guard(camera);
+         return camera->IsCapturing();
+      }
+      catch (const CMMError&) // Possibly uninitialized camera
+      {
+         // Fall through
+      }
    }
-   else
-   {
-       return false;
-   }
+   return false;
 };
 
 /**
@@ -4093,13 +4101,19 @@ MM::PropertyType CMMCore::getPropertyType(const char* label, const char* propNam
 unsigned CMMCore::getImageWidth()
 {
    std::shared_ptr<CameraInstance> camera = currentCameraDevice_.lock();
-   if (!camera)
+   if (camera)
    {
-      return 0;
+      try
+      {
+         mm::DeviceModuleLockGuard guard(camera);
+         return camera->GetImageWidth();
+      }
+      catch (const CMMError&) // Possibly uninitialized camera
+      {
+		 // Fall through
+      }
    }
-
-   mm::DeviceModuleLockGuard guard(camera);
-   return camera->GetImageWidth();
+   return 0;
 }
 
 /**
@@ -4109,13 +4123,19 @@ unsigned CMMCore::getImageWidth()
 unsigned CMMCore::getImageHeight()
 {
    std::shared_ptr<CameraInstance> camera = currentCameraDevice_.lock();
-   if (!camera)
+   if (camera)
    {
-      return 0;
+      try
+      {
+         mm::DeviceModuleLockGuard guard(camera);
+         return camera->GetImageHeight();
+      }
+      catch (const CMMError&) // Possibly uninitialized camera
+      {
+         // Fall through
+      }
    }
-
-   mm::DeviceModuleLockGuard guard(camera);
-   return camera->GetImageHeight();
+   return 0;
 }
 
 /**
@@ -4126,13 +4146,19 @@ unsigned CMMCore::getImageHeight()
 unsigned CMMCore::getBytesPerPixel()
 {
    std::shared_ptr<CameraInstance> camera = currentCameraDevice_.lock();
-   if (!camera)
+   if (camera)
    {
-      return 0;
+      try
+      {
+         mm::DeviceModuleLockGuard guard(camera);
+         return camera->GetImageBytesPerPixel();
+      }
+      catch (const CMMError&) // Possibly uninitialized camera
+      {
+         // Fall through
+      }
    }
-
-   mm::DeviceModuleLockGuard guard(camera);
-   return camera->GetImageBytesPerPixel();
+   return 0;
 }
 
 /**
@@ -4145,13 +4171,19 @@ unsigned CMMCore::getBytesPerPixel()
 unsigned CMMCore::getImageBitDepth()
 {
    std::shared_ptr<CameraInstance> camera = currentCameraDevice_.lock();
-   if (!camera)
+   if (camera)
    {
-      return 0;
+      try
+      {
+         mm::DeviceModuleLockGuard guard(camera);
+         return camera->GetBitDepth();
+      }
+      catch (const CMMError&) // Possibly uninitialized camera
+      {
+         // Fall through
+      }
    }
-
-   mm::DeviceModuleLockGuard guard(camera);
-   return camera->GetBitDepth();
+   return 0;
 }
 
 /**
@@ -4161,12 +4193,19 @@ unsigned CMMCore::getImageBitDepth()
 unsigned CMMCore::getNumberOfComponents()
 {
    std::shared_ptr<CameraInstance> camera = currentCameraDevice_.lock();
-   if (!camera)
+   if (camera)
    {
-      return 0;
+      try
+      {
+         mm::DeviceModuleLockGuard guard(camera);
+         return camera->GetNumberOfComponents();
+      }
+      catch (const CMMError&) // Possibly uninitialized camera
+      {
+         // Fall through
+      }
    }
-   mm::DeviceModuleLockGuard guard(camera);
-   return camera->GetNumberOfComponents();
+   return 0;
 }
 
 /**
@@ -4175,13 +4214,19 @@ unsigned CMMCore::getNumberOfComponents()
 unsigned CMMCore::getNumberOfCameraChannels()
 {
    std::shared_ptr<CameraInstance> camera = currentCameraDevice_.lock();
-   if (!camera)
+   if (camera)
    {
-      return 0;
+      try
+      {
+         mm::DeviceModuleLockGuard guard(camera);
+         return camera->GetNumberOfChannels();
+      }
+      catch (const CMMError&) // Possibly uninitialized camera
+      {
+         // Fall through
+      }
    }
-
-   mm::DeviceModuleLockGuard guard(camera);
-   return camera->GetNumberOfChannels();
+   return 0;
 }
 
 /**
@@ -4190,13 +4235,19 @@ unsigned CMMCore::getNumberOfCameraChannels()
 string CMMCore::getCameraChannelName(unsigned int channelNr)
 {
    std::shared_ptr<CameraInstance> camera = currentCameraDevice_.lock();
-   if (!camera)
+   if (camera)
    {
-      return std::string();
+      try
+      {
+         mm::DeviceModuleLockGuard guard(camera);
+         return camera->GetChannelName(channelNr);
+      }
+      catch (const CMMError&) // Possibly uninitialized camera
+      {
+         // Fall through
+      }
    }
-
-   mm::DeviceModuleLockGuard guard(camera);
-   return camera->GetChannelName(channelNr);
+   return std::string();
 }
 
 /**
@@ -5488,8 +5539,15 @@ double CMMCore::getPixelSizeUm(bool cached)
       std::shared_ptr<CameraInstance> camera = currentCameraDevice_.lock();
       if (camera)
       {
-         mm::DeviceModuleLockGuard guard(camera);
-         pixSize *= camera->GetBinning();
+         try
+         {
+            mm::DeviceModuleLockGuard guard(camera);
+            pixSize *= camera->GetBinning();
+         }
+         catch (const CMMError&) // Possibly uninitialized camera
+         {
+            // Assume no binning
+         }
       }
 
       pixSize /= getMagnificationFactor();
@@ -5614,17 +5672,18 @@ double CMMCore::getMagnificationFactor() const
    vector<string> magnifiers = getLoadedDevicesOfType(MM::MagnifierDevice);
    for (size_t i=0; i<magnifiers.size(); i++)
    {
+      std::shared_ptr<MagnifierInstance> magnifier =
+         deviceManager_->GetDeviceOfType<MagnifierInstance>(magnifiers[i]);
+
       try
       {
-         std::shared_ptr<MagnifierInstance> magnifier =
-            deviceManager_->GetDeviceOfType<MagnifierInstance>(magnifiers[i]);
-
          mm::DeviceModuleLockGuard guard(magnifier);
          magnification *= magnifier->GetMagnification();
       }
       catch (const CMMError&)
       {
-         assert(!"Internal error in generating a list of specific devices");
+         // Most likely the magnifier was not initialized.
+         // Ignore it: only initialized magnifiers count.
       }
    }
    return magnification;
@@ -7036,15 +7095,20 @@ double CMMCore::getLastFocusScore()
       currentAutofocusDevice_.lock();
    if (autofocus)
    {
-      mm::DeviceModuleLockGuard guard(autofocus);
-      double score;
-      int ret = autofocus->GetLastFocusScore(score);
-      if (ret != DEVICE_OK)
-         return 0.0;
-      return score;
+      try
+      {
+         mm::DeviceModuleLockGuard guard(autofocus);
+         double score;
+         int ret = autofocus->GetLastFocusScore(score);
+         if (ret == DEVICE_OK)
+            return score;
+      }
+      catch (const CMMError&) // Probably uninitialized device
+      {
+         // Fall through
+      }
    }
-   else
-      return 0.0;
+   return 0.0;
 }
 
 /**
@@ -7059,15 +7123,20 @@ double CMMCore::getCurrentFocusScore()
       currentAutofocusDevice_.lock();
    if (autofocus)
    {
-      mm::DeviceModuleLockGuard guard(autofocus);
-      double score;
-      int ret = autofocus->GetCurrentFocusScore(score);
-      if (ret != DEVICE_OK)
-         return 0.0;
-      return score;
+      try
+      {
+         mm::DeviceModuleLockGuard guard(autofocus);
+         double score;
+         int ret = autofocus->GetCurrentFocusScore(score);
+         if (ret == DEVICE_OK)
+            return score;
+      }
+      catch (const CMMError&) // Probably uninitialized device
+      {
+         // Fall through
+      }
    }
-   else
-      return 0.0;
+   return 0.0;
 }
 
 
