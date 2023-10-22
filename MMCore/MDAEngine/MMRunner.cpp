@@ -181,6 +181,11 @@ bool CMMRunner::waitUntilEvent(MDAEvent& event)
 // during the waiting loop
 return checkCanceled();
 }
+void testrun()
+{
+    std::cout << "testrun" << std::endl;
+}
+
 void CMMRunner::prepareToRun()
 {
     running_ = true;
@@ -189,7 +194,36 @@ void CMMRunner::prepareToRun()
     resetTimer();
 }
 
-void CMMRunner::run(std::vector<MDAEvent>& events)
+void CMMRunner::run(std::vector<MDAEvent> events)
+{
+    if (isRunning())
+    {
+        throw std::runtime_error("Already running");
+    }
+    // if (runThread_.joinable())
+    // {
+    //     throw std::runtime_error("Thread already running");
+    // }
+    std::cout << "Starting thread" << std::endl;
+    std::cout << "hulala" << std::endl;
+    auto event = events[0];
+    std::cout << event.getExposure() << std::endl;
+    std::thread t1(testrun);
+    t1.join();
+    // std::thread t1(&CMMRunner::runSingleThread, this, std::ref(events));
+    // runThread_ = std::move(t1);
+    std::cout << "Started thread" << std::endl;
+}
+
+void CMMRunner::waitForThreadExecution()
+{
+    if (runThread_.joinable())
+    {
+        runThread_.join();
+    }
+}
+
+void CMMRunner::runSingleThread(std::vector<MDAEvent> events)
 {
     prepareToRun();
     for (int i = 0; i < events.size(); i++)

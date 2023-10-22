@@ -9,7 +9,7 @@
 #endif
 #include "MDAEvent.h"
 #include <vector>
-
+#include <thread>
 #include "../MMCore.h"
 #include "BaseEventNotifier.h"
 
@@ -26,7 +26,8 @@ public:
     bool isPaused();
     void cancel();
     void togglePause();
-    void run(std::vector<MDAEvent> &events);
+    void run(std::vector<MDAEvent> events);
+    void runSingleThread(std::vector<MDAEvent> events);
     void* runEvent(MDAEvent& event);
     bool waitUntilEvent(MDAEvent& event);
     void setupEvent(MDAEvent& event);
@@ -46,6 +47,9 @@ public:
     void setEventZ(MDAEvent& event);
     void setEventExposure(MDAEvent& event);
     void setEventChannel(MDAEvent& event);
+    
+    // threading related
+    void waitForThreadExecution();
 
     // from mmcore
     unsigned getImageWidth() { return core_->getImageWidth(); };
@@ -63,6 +67,7 @@ private:
     double startTime_;
     BaseEventNotifier* notifier_;
     bool autoshutterWasSet_;
+    std::thread runThread_;
     // TODO: Z correction related.
     std::map<int, double> zCorrection_;
     std::map<int, double> zCorrectionDefault_;

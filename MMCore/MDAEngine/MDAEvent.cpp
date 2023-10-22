@@ -20,6 +20,12 @@ Channel::Channel(string config, string group):
 {
     ;
 }
+Channel::Channel():
+    config_(""),
+    group_("")
+{
+    ;
+}
 
 PropertyTuple::PropertyTuple(string device_name, string property_name, float value):
     deviceName_(device_name),
@@ -45,6 +51,14 @@ MDAEvent::MDAEvent(std::map<std::string, int> index, Channel channel, float expo
     {
     ;
     }
+MDAEvent::MDAEvent():
+    xSet_(false),
+    ySet_(false),
+    zSet_(false)
+    {
+    ;
+    }
+
 bool MDAEvent::keepShutterOpen(){
     return keepShutterOpen_;
 }
